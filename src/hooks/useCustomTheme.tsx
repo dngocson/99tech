@@ -1,4 +1,4 @@
-import { createTheme } from "@mantine/core";
+import { createTheme, Text, Title } from "@mantine/core";
 import { useMemo } from "react";
 
 export function useCustomTheme() {
@@ -33,7 +33,19 @@ export function useCustomTheme() {
           ],
         },
         primaryColor: "primary",
-        components: {},
+
+        components: {
+          Title: Title.extend({
+            classNames: {
+              root: "gradientText",
+            },
+          }),
+          Text: Text.extend({
+            classNames: {
+              root: "gradientText",
+            },
+          }),
+        },
       }),
     []
   );

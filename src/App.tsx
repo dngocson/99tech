@@ -1,19 +1,14 @@
 import {
   Box,
   Code,
-  Flex,
   Group,
   MantineProvider,
   ScrollArea,
   Text,
-  UnstyledButton,
+  UnstyledButton
 } from "@mantine/core";
 import { useThrottledState } from "@mantine/hooks";
-import {
-  IconBellRinging,
-  IconFingerprint,
-  IconReceipt2,
-} from "@tabler/icons-react";
+import { IconHelpHexagon } from "@tabler/icons-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import classes from "./App.module.css";
@@ -22,9 +17,9 @@ import { useCustomTheme } from "./hooks/useCustomTheme";
 import { LINK_HOME, QUESTION_1, QUESTION_2, QUESTION_3 } from "./libs/constant";
 
 const data = [
-  { link: QUESTION_1, label: "Question 1", icon: IconBellRinging },
-  { link: QUESTION_2, label: "Question 2", icon: IconReceipt2 },
-  { link: QUESTION_3, label: "Question 3", icon: IconFingerprint },
+  { link: QUESTION_1, label: "Problem 1", icon: IconHelpHexagon },
+  { link: QUESTION_2, label: "Problem 2", icon: IconHelpHexagon },
+  { link: QUESTION_3, label: "Problem 3", icon: IconHelpHexagon },
 ];
 
 const App = () => {
@@ -74,20 +69,26 @@ const App = () => {
         style={{ height: "100vh" }}
         onScrollPositionChange={setThrottledValue}
       >
-        <Flex>
-          <nav className={classes.navbar}>
-            <div className={classes.navbarMain}>
-              <Group className={classes.header} justify="space-between">
+        <Box
+          id="top"
+          className="grid grid-cols-12 bg-gradient-to-b from-indigo-100 via-purple-100 to-pink-100"
+        >
+          <nav className={`${classes.navbar} h-full col-span-3 `}>
+            <div className={`${classes.navbarMain}`}>
+              <Group
+                className={`${classes.header} sticky top-[16px]`}
+                justify="space-between"
+              >
                 <Text fw={700}>Interview Test</Text>
                 <Code fw={700}>99Tech</Code>
+                {links}
               </Group>
-              {links}
             </div>
           </nav>
-          <Box className="flex-1">
+          <Box className="col-span-9 h-full items-center">
             <Outlet />
           </Box>
-        </Flex>
+        </Box>
         <CustomAffix position={throttledValue} />
       </ScrollArea>
     </MantineProvider>

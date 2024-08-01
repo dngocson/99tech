@@ -90,7 +90,7 @@ const Question1 = () => {
       <Flex
         direction={"column"}
         gap={16}
-        className="border border-black rounded-lg p-12"
+        className="border border-black rounded-lg p-12 shadow-lg shadow-red-300"
       >
         <Title className="">Problem 1: Three ways to sum to n </Title>
         <Flex direction={"column"} gap={16}>
