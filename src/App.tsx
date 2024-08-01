@@ -5,7 +5,7 @@ import {
   MantineProvider,
   ScrollArea,
   Text,
-  UnstyledButton
+  UnstyledButton,
 } from "@mantine/core";
 import { useThrottledState } from "@mantine/hooks";
 import { IconHelpHexagon } from "@tabler/icons-react";
@@ -73,7 +73,7 @@ const App = () => {
           id="top"
           className="grid grid-cols-12 bg-gradient-to-b from-indigo-100 via-purple-100 to-pink-100"
         >
-          <nav className={`${classes.navbar} h-full col-span-3 `}>
+          <nav className={`${classes.navbar} h-full col-span-2 `}>
             <div className={`${classes.navbarMain}`}>
               <Group
                 className={`${classes.header} sticky top-[16px]`}
@@ -85,7 +85,7 @@ const App = () => {
               </Group>
             </div>
           </nav>
-          <Box className="col-span-9 h-full items-center">
+          <Box className="col-span-10 h-full items-center">
             <Outlet />
           </Box>
         </Box>
