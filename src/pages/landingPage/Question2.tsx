@@ -84,14 +84,13 @@ const Question2 = () => {
           `/pair/${peer}/${target}/${value}`
         );
         setComparedResult(exchangeResponse.data);
-        open();
       }
     } catch (error) {
       console.error("Error fetching exchange rate:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [form, open]);
+  }, [form]);
 
   const Result = useMemo(
     () => (
