@@ -1,7 +1,15 @@
-import { Combobox, Flex, Text, TextInput, useCombobox } from "@mantine/core";
-import { useState } from "react";
+import {
+  Combobox,
+  Flex,
+  Text,
+  TextInput,
+  Tooltip,
+  useCombobox,
+} from "@mantine/core";
 
-interface ICustomDropdownInputProps {
+interface ICustomDropdownInputProps<
+  T extends keyof { peer: string; target: string }
+> {
   data: {
     Country: string;
     CountryCode: string;
@@ -10,38 +18,68 @@ interface ICustomDropdownInputProps {
   }[];
   label: string;
   placeHolder: string;
-  target: string;
-  onConfirm: (field: string, value: string) => void;
+  target: T;
+  form: {
+    onChange: (field: T, value: string) => void;
+    setFieldValue: (field: T, value: string) => void;
+    values: Record<T, string>;
+    errors: Record<T, string>;
+  };
+  onConfirm: (field: T, value: string) => void;
 }
 
-export function CustomDropdownInput({
+export function CustomDropdownInput<
+  T extends keyof { peer: string; target: string }
+>({
   data,
   label,
+  form,
   placeHolder,
   target,
   onConfirm,
-}: ICustomDropdownInputProps) {
+}: ICustomDropdownInputProps<T>) {
   const combobox = useCombobox();
-  const [value, setValue] = useState("");
 
-  const shouldFilterOptions = !data.some((item) => item.Country === value);
+  const shouldFilterOptions = !data.some(
+    (item) => item.Country === form.values[target]
+  );
   const filteredOptions = shouldFilterOptions
     ? data.filter(
         (item) =>
-          item.Country.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.Code.toLowerCase().includes(value.toLowerCase().trim())
+          item.Country.toLowerCase().includes(
+            form.values[target].toLowerCase().trim()
+          ) ||
+          item.Code.toLowerCase().includes(
+            form.values[target].toLowerCase().trim()
+          )
       )
     : data;
 
   const options = filteredOptions.map((item) => (
     <Combobox.Option value={item.Code} key={item.Country}>
-      <Flex gap={"4"} align={"center"}>
-        <Text fw={700}>{item.Code}</Text>
-        <Text>{item.Country}</Text>
+      <Flex gap={"4"} align={"center"} className="">
         <img
-          className="w-[25px] h-[25px]"
+          className="w-[25px] h-[25px] "
           src={`https://flagsapi.com/${item.CountryCode}/flat/64.png`}
         />
+        <div className="flex items-center">
+          <Text fw={700} className="truncate">
+            {item.Code}
+          </Text>
+        </div>
+        -
+        <div className="flex items-center">
+          <Text fw={700} className="truncate">
+            {item.Currency}
+          </Text>
+        </div>
+        <Tooltip className="flex items-center ml-auto" label={item.Country}>
+          <div className="flex ml-auto items-center">
+            <Text fz={12} className=" truncate">
+              {item.Country}
+            </Text>
+          </div>
+        </Tooltip>
       </Flex>
     </Combobox.Option>
   ));
@@ -49,23 +87,25 @@ export function CustomDropdownInput({
   return (
     <Combobox
       onOptionSubmit={(optionValue) => {
-        setValue(optionValue);
+        form.setFieldValue(target, optionValue);
         onConfirm(target, optionValue);
         combobox.closeDropdown();
       }}
       store={combobox}
       withinPortal={false}
+      position="bottom-start"
       classNames={{
-        dropdown: "max-h-[300px] overflow-y-auto",
+        dropdown: "max-h-[300px] !w-[380px] overflow-y-auto",
       }}
     >
       <Combobox.Target>
         <TextInput
+          size="lg"
           label={label}
           placeholder={placeHolder}
-          value={value}
+          value={form.values[target]}
           onChange={(event) => {
-            setValue(event.currentTarget.value);
+            form.setFieldValue(target, event.currentTarget.value);
 
             combobox.openDropdown();
             combobox.updateSelectedOptionIndex();
@@ -73,6 +113,7 @@ export function CustomDropdownInput({
           onClick={() => combobox.openDropdown()}
           onFocus={() => combobox.openDropdown()}
           onBlur={() => combobox.closeDropdown()}
+          error={form.errors[target] && form.errors[target]}
         />
       </Combobox.Target>
 

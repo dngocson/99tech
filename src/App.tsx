@@ -30,7 +30,7 @@ const App = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const [active, setActive] = useState(QUESTION_1);
+  const [active, setActive] = useState(location.pathname);
 
   useEffect(() => {
     if (location.pathname === LINK_HOME) navigate(QUESTION_1);

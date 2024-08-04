@@ -19,6 +19,7 @@ const Tryout = memo(({ fn }: { fn: (number: number) => number }) => {
         <Flex gap={6}>
           <NumberInput
             value={inputValue}
+            size="lg"
             onChange={(n) => {
               setInputValue(n as number);
             }}
@@ -26,9 +27,13 @@ const Tryout = memo(({ fn }: { fn: (number: number) => number }) => {
             allowDecimal={false}
             allowNegative={false}
           />
-          <Button onClick={() => setValue(fn(inputValue))}>Calculate</Button>
+          <Button size="lg" onClick={() => setValue(fn(inputValue))}>
+            Calculate
+          </Button>
         </Flex>
-        <Text>{value}</Text>
+        <Text fz={18} fw={700}>
+          Result: {value}
+        </Text>
       </Flex>
     </>
   );
@@ -37,7 +42,7 @@ const Tryout = memo(({ fn }: { fn: (number: number) => number }) => {
 const Question1 = () => {
   // SOLUTION 1
   const solution_1 = `
-    const sum_to_n_a = (n:number) =>{
+    const sum_to_n_a = (n:number) => {
     let sum = 0;
     for (let i = 0; i<=n; i++){
         sum += i
@@ -66,18 +71,14 @@ const Question1 = () => {
     );
   };
   const solution_3 = `
-    let sum = 0;
-    Array.from({ length: n + 1 }, (_, i) => i).forEach(num => {
-        sum += num;
-    });
+    const sum_to_n_c = (n:number) => {
+    if (n <= 0) return 0; 
+    return n + sum_to_n_c(n - 1); }
     return sum;
   `;
   const sum_to_n_c = (n: number): number => {
-    let sum = 0;
-    Array.from({ length: n + 1 }, (_, i) => i).forEach((num) => {
-      sum += num;
-    });
-    return sum;
+    if (n <= 0) return 0;
+    return n + sum_to_n_c(n - 1);
   };
 
   return (
@@ -94,17 +95,23 @@ const Question1 = () => {
       >
         <Title className="">Problem 1: Three ways to sum to n </Title>
         <Flex direction={"column"} gap={16}>
-          <Text>Solution 1:</Text>
-          <Code block>{solution_1}</Code>
+          <Text fz={18}>Solution 1:</Text>
+          <Code className="text-lg" block>
+            {solution_1}
+          </Code>
           <Tryout fn={sum_to_n_a} />
 
           <Divider my="md" />
-          <Text>Solution 2:</Text>
-          <Code block>{solution_2}</Code>
+          <Text fz={18}>Solution 2:</Text>
+          <Code className="text-lg" block>
+            {solution_2}
+          </Code>
           <Tryout fn={sum_to_n_b} />
           <Divider my="md" />
-          <Text>Solution 3:</Text>
-          <Code block>{solution_3}</Code>
+          <Text fz={18}>Solution 3:</Text>
+          <Code className="text-lg" block>
+            {solution_3}
+          </Code>
           <Tryout fn={sum_to_n_c} />
         </Flex>
       </Flex>
