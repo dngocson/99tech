@@ -71,10 +71,10 @@ const Question1 = () => {
     );
   };
   const solution_3 = `
-    const sum_to_n_c = (n:number) => {
-    if (n <= 0) return 0; 
-    return n + sum_to_n_c(n - 1); }
-    return sum;
+    const sum_to_n_c = (n: number): number => {
+    if (n <= 0) return 0;
+    return n + sum_to_n_c(n - 1);
+    };
   `;
   const sum_to_n_c = (n: number): number => {
     if (n <= 0) return 0;
